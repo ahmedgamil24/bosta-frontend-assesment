@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SkeletonCard from "../components/SkeletonCard";
+import SkeletonForm from "../components/SkeletonForm";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -50,7 +51,7 @@ function CreateProduct() {
     }
   };
 
-  if (loading) return <div><SkeletonCard /> </div>
+  if (loading) return <div><SkeletonForm /> </div>
 
   return (
     <div className="container mx-auto p-6 flex justify-center">

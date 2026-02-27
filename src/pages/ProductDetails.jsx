@@ -30,7 +30,7 @@ function ProductDetails() {
 
   if (loading) return <p className="text-center mt-10"><SkeletonCard /></p>;
   if (error) return <p className="text-center mt-10 text-red-500"><ErrorToast error={error} setError={setError}/></p>;
-  if (!product) return null;
+  if (!product) return <p className="text-center mt-10">No product found.</p>;;
 
   return (
     <>
