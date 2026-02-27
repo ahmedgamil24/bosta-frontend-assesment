@@ -47,87 +47,131 @@ function CreateProduct() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-xl">
-      <h1 className="text-2xl font-bold mb-6">Create Product</h1>
+    <div className="container mx-auto p-6 flex justify-center">
+      <div className="card w-full max-w-xl bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h1 className="card-title text-2xl mb-4">Create Product</h1>
 
-      {success && (
-        <p className="bg-green-100 text-green-700 p-3 mb-4 rounded">
-          Product created successfully!
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
-        <div>
-          <input
-            {...register("title")}
-            placeholder="Title"
-            className="w-full border p-2 rounded"
-          />
-          {errors.title && (
-            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          {success && (
+            <div className="alert alert-success mb-4">
+              <span>Product created successfully!</span>
+            </div>
           )}
-        </div>
 
-        <div>
-          <textarea
-            {...register("description")}
-            placeholder="Description"
-            className="w-full border p-2 rounded"
-          />
-          {errors.description && (
-            <p className="text-red-500 text-sm">{errors.description.message}</p>
-          )}
-        </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Title */}
+            <div className="form-control w-full">
+              <label className="label pb-1">
+                <span className="label-text font-medium">Title</span>
+              </label>
+              <input
+                {...register("title")}
+                className={`input input-bordered mb-1.5 w-full ${
+                  errors.title ? "input-error" : ""
+                }`}
+                placeholder="Enter product title"
+              />
+              {errors.title && (
+                <span className="text-error text-sm mt-1">
+                  {errors.title.message}
+                </span>
+              )}
+            </div>
 
-        <div>
-          <input
-            type="number"
-            {...register("price")}
-            placeholder="Price"
-            className="w-full border p-2 rounded"
-          />
-          {errors.price && (
-            <p className="text-red-500 text-sm">{errors.price.message}</p>
-          )}
-        </div>
+            {/* Description */}
+            <div className="form-control w-full">
+              <label className="label pb-1">
+                <span className="label-text font-medium">Description</span>
+              </label>
+              <textarea
+                {...register("description")}
+                className={`textarea textarea-bordered mb-1.5 w-full ${
+                  errors.description ? "textarea-error" : ""
+                }`}
+                placeholder="Enter product description"
+              />
+              {errors.description && (
+                <span className="text-error text-sm mt-1">
+                  {errors.description.message}
+                </span>
+              )}
+            </div>
 
-        <div>
-          <select
-            {...register("category")}
-            className="w-full border p-2 rounded"
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-          {errors.category && (
-            <p className="text-red-500 text-sm">{errors.category.message}</p>
-          )}
-        </div>
+            {/* Price */}
+            <div className="form-control w-full">
+              <label className="label pb-1">
+                <span className="label-text font-medium">Price</span>
+              </label>
+              <input
+                type="number"
+                {...register("price")}
+                className={`input input-bordered mb-1.5 w-full ${
+                  errors.price ? "input-error" : ""
+                }`}
+                placeholder="Enter price"
+              />
+              {errors.price && (
+                <span className="text-error text-sm mt-1">
+                  {errors.price.message}
+                </span>
+              )}
+            </div>
 
-        <div>
-          <input
-            {...register("image")}
-            placeholder="Image URL"
-            className="w-full border p-2 rounded"
-          />
-          {errors.image && (
-            <p className="text-red-500 text-sm">{errors.image.message}</p>
-          )}
-        </div>
+            {/* Category */}
+            <div className="form-control w-full">
+              <label className="label pb-1">
+                <span className="label-text font-medium">Category</span>
+              </label>
+              <select
+                {...register("category")}
+                className={`select select-bordered mb-1.5 w-full ${
+                  errors.category ? "select-error" : ""
+                }`}
+              >
+                <option value="">Select category</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <span className="text-error text-sm mt-1">
+                  {errors.category.message}
+                </span>
+              )}
+            </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-black text-white p-2 rounded disabled:opacity-50"
-        >
-          {isSubmitting ? "Creating..." : "Create Product"}
-        </button>
-      </form>
+            {/* Image */}
+            <div className="form-control w-full">
+              <label className="label pb-1">
+                <span className="label-text font-medium">Image URL</span>
+              </label>
+              <input
+                {...register("image")}
+                className={`input input-bordered mb-1.5 w-full ${
+                  errors.image ? "input-error" : ""
+                }`}
+                placeholder="https://example.com/image.jpg"
+              />
+              {errors.image && (
+                <span className="text-error text-sm mt-1">
+                  {errors.image.message}
+                </span>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn btn-primary w-full mt-4"
+            >
+              {isSubmitting ? "Creating..." : "Create Product"}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
