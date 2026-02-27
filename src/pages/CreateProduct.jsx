@@ -3,6 +3,7 @@ import axiosInstance from "../api/axiosInstance";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SkeletonCard from "../components/SkeletonCard";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -15,6 +16,7 @@ const schema = z.object({
 function CreateProduct() {
   const [categories, setCategories] = useState([]);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   const {
     register,
@@ -30,6 +32,7 @@ function CreateProduct() {
     const fetchCategories = async () => {
       const response = await axiosInstance.get("/products/categories");
       setCategories(response.data);
+      setLoading(false)
     };
     fetchCategories();
   }, []);
@@ -42,9 +45,12 @@ function CreateProduct() {
       setSuccess(true);
       reset();
     } catch (error) {
+      // console.log(error)
       alert("Failed to create product.");
     }
   };
+
+  if (loading) return <div><SkeletonCard /> </div>
 
   return (
     <div className="container mx-auto p-6 flex justify-center">

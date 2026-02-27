@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router";
+import SkeletonCard from "../components/SkeletonCard";
+import ErrorToast from "../components/ErrorToast";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -41,7 +43,7 @@ const Products = () => {
         setProducts(response.data);
       } catch (err) {
         // console.log(err)
-        setError("Something went wrong while fetching products.");
+        setError("Something went wrong while loading products.");
       } finally {
         setLoading(false);
       }
@@ -53,13 +55,6 @@ const Products = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
-
-  if (loading) return <div>Loading... </div>;
-
-  if (error) return <div>{error}</div>;
-
-  if (!products.length)
-    return <p className="text-center mt-10">No products found.</p>;
 
   // Pagination
   const productsPerPage = 10;
@@ -75,8 +70,24 @@ const Products = () => {
 
   const totalPages = Math.ceil(products.length / productsPerPage);
 
+  if (loading)
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {Array.from({ length: productsPerPage }).map((_, idx) => (
+          <SkeletonCard key={idx} />
+        ))}
+      </div>
+    );
+
+  // if (error) return <div>{error}</div>;
+
+  // if (!products.length)
+  //   return <p className="text-center mt-10">No products found.</p>;
+
   return (
     <div className="container mx-auto p-4">
+      {error && ( <ErrorToast error={error} setError={setError}/>)}
+
       <div className="navbar bg-base-100 mb-6 rounded-box shadow px-4 flex flex-col sm:flex-row gap-3">
         {/* Left Side */}
         <div className="flex-1">

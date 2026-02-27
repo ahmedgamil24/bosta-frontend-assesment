@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import axiosInstance from "../api/axiosInstance";
+import SkeletonCard from "../components/SkeletonCard";
+import ErrorToast from "../components/ErrorToast";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -16,6 +18,7 @@ function ProductDetails() {
         const response = await axiosInstance.get(`/products/${id}`);
         setProduct(response.data);
       } catch (err) {
+        // console.log(err)
         setError("Failed to load product.");
       } finally {
         setLoading(false);
@@ -25,8 +28,8 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
-  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+  if (loading) return <p className="text-center mt-10"><SkeletonCard /></p>;
+  if (error) return <p className="text-center mt-10 text-red-500"><ErrorToast error={error} setError={setError}/></p>;
   if (!product) return null;
 
   return (
