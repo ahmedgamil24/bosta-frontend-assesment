@@ -16,8 +16,8 @@ const schema = z.object({
 
 function CreateProduct() {
   const [categories, setCategories] = useState([]);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState(null);
 
   const {
     register,
@@ -28,30 +28,43 @@ function CreateProduct() {
     resolver: zodResolver(schema),
   });
 
+  // Disapearing the toast
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await axiosInstance.get("/products/categories");
-      setCategories(response.data);
-      setLoading(false)
+      try {
+        const response = await axiosInstance.get("/products/categories");
+        setCategories(response.data);
+      } catch (error) {
+        console.log(error);
+        setToast({ type: "error", message: "Failed to load categories." });
+      } finally {
+        setLoading(false);
+      }
     };
     fetchCategories();
   }, []);
 
   const onSubmit = async (data) => {
-    setSuccess(false);
-
     try {
       await axiosInstance.post("/products", data);
-      setSuccess(true);
+      setToast({ type: "success", message: "Product created successfully!" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       reset();
     } catch (error) {
       // console.log(error)
-      alert("Failed to create product.");
+      setToast({ type: "error", message: "Failed to create product." });
     }
   };
 
-  if (loading) return <div><SkeletonForm /> </div>
+  if (loading) return (<div><SkeletonForm />{" "}</div>);
 
   return (
     <div className="container mx-auto p-6 flex justify-center">
@@ -59,9 +72,15 @@ function CreateProduct() {
         <div className="card-body">
           <h1 className="card-title text-2xl mb-4">Create Product</h1>
 
-          {success && (
-            <div className="alert alert-success mb-4">
-              <span>Product created successfully!</span>
+          {toast && (
+            <div className="toast toast-top toast-end">
+              <div
+                className={`alert ${
+                  toast.type === "success" ? "alert-success" : "alert-error"
+                }`}
+              >
+                <span>{toast.message}</span>
+              </div>
             </div>
           )}
 
@@ -174,6 +193,9 @@ function CreateProduct() {
               disabled={isSubmitting}
               className="btn btn-primary w-full mt-4"
             >
+              {isSubmitting && (
+                <span className="loading loading-spinner loading-sm"></span>
+              )}
               {isSubmitting ? "Creating..." : "Create Product"}
             </button>
           </form>
