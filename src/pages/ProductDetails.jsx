@@ -30,41 +30,59 @@ function ProductDetails() {
   if (!product) return null;
 
   return (
-    <div className="container mx-auto p-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-6 bg-gray-200 px-4 py-2 rounded"
-      >
-        Back to Products
-      </button>
+    <>
+  <div className="container mx-auto p-6">
 
-      <div className="grid md:grid-cols-2 gap-10 items-center">
+    <div className="card lg:card-side bg-base-100 shadow-xl p-6">
+
+      {/* Image */}
+      <figure className="flex-1 bg-white rounded-xl p-6">
         <img
           src={product.image}
           alt={product.title}
-          className="h-80 mx-auto object-contain"
+          className="h-80 object-contain mx-auto"
         />
+      </figure>
 
-        <div>
-          <h1 className="text-3xl font-bold mb-4">
-            {product.title}
-          </h1>
+      {/* Details */}
+      <div className="card-body flex-1">
 
-          <p className="text-gray-600 mb-4">
-            {product.category}
-          </p>
+        <h1 className="card-title text-3xl">
+          {product.title}
+        </h1>
 
-          <p className="mb-6 leading-relaxed">
-            {product.description}
-          </p>
-
-          <p className="text-2xl font-bold">
-            ${product.price}
-          </p>
+        <div className="badge badge-outline w-fit">
+          {product.category}
         </div>
+
+        <p className="text-base-content/70 leading-relaxed mt-4">
+          {product.description}
+        </p>
+
+        <div className="mt-6 flex items-center justify-between">
+          <span className="text-3xl font-bold text-primary">
+            ${product.price}
+          </span>
+
+          {/* <button className="btn btn-primary">
+            Add to Cart
+          </button> */}
+        </div>
+
       </div>
     </div>
-  );
-}
+  </div>
+
+      {/* Back Button */}
+      <div className=" flex justify-center items-center mt-5">
+    <button
+      onClick={() => navigate(-1)}
+      className="btn btn-outline btn-primary btn-sm mb-6"
+    >
+      ← Back to Products
+    </button>
+</div>
+    </>
+);}
 
 export default ProductDetails;
