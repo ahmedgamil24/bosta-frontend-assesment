@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import ProductCard from "../components/ProductCard";
+import { Link } from "react-router";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -76,28 +77,37 @@ const Products = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Products</h1>
+      <div className="navbar bg-base-100 mb-6 rounded-box shadow px-4 flex flex-col sm:flex-row gap-3">
+        {/* Left Side */}
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold">Products</h1>
+        </div>
 
-      {/* Sorting */}
-      <div className="flex flex-wrap gap-4 mb-6 items-center">
-        <select
-          value={sortOption}
-          onChange={(e) => {
-            setSortOption(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="border px-3 py-2 rounded"
-        >
-          <option value="">Default</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
+        {/* Right Side */}
+        <div className="flex-none flex items-center gap-3">
+          <select
+            value={sortOption}
+            onChange={(e) => {
+              setSortOption(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="select select-bordered select-sm"
+          >
+            <option value="">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
 
-          {categories.map((cat) => (
-            <option key={cat} value={`category-${cat}`}>
-              Category: {cat}
-            </option>
-          ))}
-        </select>
+            {categories.map((cat) => (
+              <option key={cat} value={`category-${cat}`}>
+                Category: {cat}
+              </option>
+            ))}
+          </select>
+
+          <Link to="/create" className="btn btn-primary btn-sm">
+            Create Product
+          </Link>
+        </div>
       </div>
 
       {/* Listing Products */}
@@ -113,8 +123,8 @@ const Products = () => {
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
-            className={`px-4 py-2 rounded border ${
-              currentPage === index + 1 ? "bg-black text-white" : "bg-white"
+            className={`btn btn-md ${
+              currentPage === index + 1 ? "btn-primary" : "btn-outline"
             }`}
           >
             {index + 1}

@@ -1,30 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router'
+import { Link } from "react-router";
 
-const ProductCard = ( {product} ) => {
+const ProductCard = ({ product }) => {
   return (
-    <div className="border p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between h-full">
-      <img
-        src={product.image}
-        alt={product.title}
-        className="h-40 mx-auto object-contain"
-      />
+    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition">
+      <figure className="h-52 bg-white p-4">
+        <img
+          src={product.image}
+          alt={product.title}
+          className="h-full object-contain"
+        />
+      </figure>
 
-      <h2 className="font-semibold mt-4 line-clamp-2 ">
-        {product.title}
-      </h2>
+      <div className="card-body flex flex-col">
+        <h2 className="card-title line-clamp-1">{product.title}</h2>
 
-      <p className="text-gray-500">{product.category}</p>
-      <p className="font-bold mt-2">${product.price}</p>
+        <p className="text-sm text-gray-500 line-clamp-2">
+          {product.category}
+        </p>
 
-      <Link
-        to={`/products/${product.id}`}
-        className="block mt-4 text-center bg-black text-white py-2 rounded"
-      >
-        View Details
-      </Link>
+        <div className="mt-auto flex justify-between items-center">
+          <span className="text-lg font-bold text-primary">
+            ${product.price}
+          </span>
+
+          <Link
+            to={`/products/${product.id}`}
+            className="btn btn-sm btn-outline btn-primary"
+          >
+            Details
+          </Link>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;

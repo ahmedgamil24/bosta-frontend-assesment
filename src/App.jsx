@@ -16,6 +16,8 @@ function App() {
         </Routes>
       </div> */}
 
+        {/* <Card /> */}
+
       <Routes>
         <Route path="/" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
