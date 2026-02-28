@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams,  } from "react-router";
 import axiosInstance from "../api/axiosInstance";
 import SkeletonCard from "../components/SkeletonCard";
-import ErrorToast from "../components/ErrorToast";
 import BackButton from "../components/BackButton";
+import EmptyState from "../components/EmptyState";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -17,18 +17,21 @@ function ProductDetails() {
         const response = await axiosInstance.get(`/products/${id}`);
         setProduct(response.data);
       } catch (err) {
-        // console.log(err)
-        setError("Failed to load product.");
-      } finally {
+      if (err.response?.status === 404) {
+        setProduct(null);
+      } else {
+        setError("Something went wrong.");
+      }
+    } finally {
         setLoading(false);
       }
     };
     fetchProduct();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-10"><SkeletonCard /></p>;
-  if (error) return <p className="text-center mt-10 text-red-500"><ErrorToast error={error} setError={setError}/></p>;
-  if (!product) return <p className="text-center mt-10">No product found.</p>;;
+  if (loading) return <div className="text-center mt-10"><SkeletonCard /></div>;
+  if (error) return <EmptyState icon="⚠️" title="Failed to Load Product" description={error} actionText="Retry" onAction={() => window.location.reload()} />
+  if (!product) return <EmptyState icon="❌" title="Product Not Found" description="The product you are looking for does not exist."/>
 
   return (
     <>

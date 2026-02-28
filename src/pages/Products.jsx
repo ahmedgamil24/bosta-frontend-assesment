@@ -3,7 +3,7 @@ import axiosInstance from "../api/axiosInstance";
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router";
 import SkeletonCard from "../components/SkeletonCard";
-import ErrorToast from "../components/ErrorToast";
+import EmptyState from "../components/EmptyState";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -71,13 +71,20 @@ const Products = () => {
           <SkeletonCard key={idx} />
         ))}
       </div>
-    );
-  // if (error) return <div>{error}</div>;
-    if (!products.length && !error) return <p className="text-center mt-10">No Products Found. </p>
-  return (
-    <div className="container mx-auto p-4">
-      {error && ( <ErrorToast error={error} setError={setError}/>)}
+  );
+    
+  if (error) {
+  return ( <EmptyState icon="⚠️" title="Failed to Load Products" description={error} actionText="Retry" onAction={() => window.location.reload()} />);}
+  
+  if (!loading && products.length === 0) {
+  return ( <EmptyState icon="📦" title="No Products Available" description="There are no products in the store yet." /> );}
 
+  if (!currentProducts.length) {
+  return (
+    <EmptyState icon="🛍️" title="No Products Found" description="Try adjusting your filters or sorting." actionText="Reset Filters" onAction={() => { setSortOption(""); setCurrentPage(1); }}/>);}
+  
+    return (
+    <div className="container mx-auto p-4">
       <div className="navbar bg-base-100 mb-6 rounded-box shadow px-4 flex flex-col sm:flex-row gap-3">
         {/* Left Side */}
         <div className="flex-1">
@@ -120,7 +127,7 @@ const Products = () => {
 
       {/* Pagination */}
       <div className="flex justify-center mt-8 gap-2 flex-wrap">
-        {Array.from({ length: totalPages }, (_, index) => (
+        {Array.from({ length: totalPages + 1 }, (_, index) => (
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
