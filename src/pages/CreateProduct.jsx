@@ -3,8 +3,8 @@ import axiosInstance from "../api/axiosInstance";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import SkeletonCard from "../components/SkeletonCard";
 import SkeletonForm from "../components/SkeletonForm";
+import BackButton from "../components/BackButton";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -67,8 +67,9 @@ function CreateProduct() {
   if (loading) return (<div><SkeletonForm />{" "}</div>);
 
   return (
-    <div className="container mx-auto p-6 flex justify-center">
-      <div className="card w-full max-w-xl bg-base-100 shadow-xl">
+    <>
+    <div className="container mx-auto p-6 flex justify-center ">
+      <div className="card w-full max-w-xl bg-base-100 shadow-xl border border-gray-200">
         <div className="card-body">
           <h1 className="card-title text-2xl mb-4">Create Product</h1>
 
@@ -202,6 +203,8 @@ function CreateProduct() {
         </div>
       </div>
     </div>
+      <BackButton />
+</>
   );
 }
 

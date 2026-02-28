@@ -1,5 +1,3 @@
-import React from 'react'
-
 const SkeletonForm = () => {
   return (
     <div className="container mx-auto p-6 flex justify-center">
@@ -16,5 +14,4 @@ const SkeletonForm = () => {
     </div>
   )
 }
-
 export default SkeletonForm

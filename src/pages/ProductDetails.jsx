@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams,  } from "react-router";
 import axiosInstance from "../api/axiosInstance";
 import SkeletonCard from "../components/SkeletonCard";
 import ErrorToast from "../components/ErrorToast";
+import BackButton from "../components/BackButton";
 
 function ProductDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +23,6 @@ function ProductDetails() {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [id]);
 
@@ -35,8 +33,7 @@ function ProductDetails() {
   return (
     <>
   <div className="container mx-auto p-6">
-
-    <div className="card lg:card-side bg-base-100 shadow-xl p-6">
+    <div className="card lg:card-side bg-base-100 shadow-xl p-6 border border-gray-200">
 
       {/* Image */}
       <figure className="flex-1 bg-white rounded-xl p-6">
@@ -49,42 +46,29 @@ function ProductDetails() {
 
       {/* Details */}
       <div className="card-body flex-1">
-
         <h1 className="card-title text-3xl">
           {product.title}
         </h1>
-
         <div className="badge badge-outline w-fit">
           {product.category}
         </div>
-
         <p className="text-base-content/70 leading-relaxed mt-4">
           {product.description}
         </p>
-
         <div className="mt-6 flex items-center justify-between">
           <span className="text-3xl font-bold text-primary">
             ${product.price}
           </span>
-
+          
+          {/* To Be Continued... */}
           {/* <button className="btn btn-primary">
             Add to Cart
           </button> */}
         </div>
-
       </div>
     </div>
   </div>
-
-      {/* Back Button */}
-      <div className=" flex justify-center items-center mt-5">
-    <button
-      onClick={() => navigate(-1)}
-      className="btn btn-outline btn-primary btn-sm mb-6"
-    >
-      ← Back to Products
-    </button>
-</div>
+<BackButton />
     </>
 );}
 

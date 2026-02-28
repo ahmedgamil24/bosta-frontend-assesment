@@ -1,6 +1,4 @@
-import React from 'react'
-
-  // Skeleton
+// Skeleton
   const SkeletonCard = () => (
     <div className="card bg-base-200 animate-pulse h-80 rounded-lg p-4 flex flex-col justify-between">
       <div className="h-32 bg-base-300 rounded mb-4"></div>
@@ -9,5 +7,4 @@ import React from 'react'
       <div className="h-8 bg-base-300 rounded w-full"></div>
   </div>
   );
-
 export default SkeletonCard

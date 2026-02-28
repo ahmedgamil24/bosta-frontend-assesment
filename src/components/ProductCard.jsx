@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition">
+    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition border border-gray-200">
       <figure className="h-52 bg-white p-4">
         <img
           src={product.image}
@@ -34,5 +34,4 @@ const ProductCard = ({ product }) => {
     </div>
   );
 };
-
 export default ProductCard;

@@ -14,7 +14,6 @@ const Products = () => {
 
   // Sorting State
   const [sortOption, setSortOption] = useState("");
-
   const categories = [...new Set(products.map((p) => p.category))];
 
   // Sorted Products
@@ -22,16 +21,13 @@ const Products = () => {
     if (sortOption === "price-asc") {
       return a.price - b.price;
     }
-
     if (sortOption === "price-desc") {
       return b.price - a.price;
     }
-
     if (sortOption.startsWith("category-")) {
       const selectedCategory = sortOption.split("-")[1];
       return a.category === selectedCategory ? -1 : 1;
     }
-
     return 0;
   });
 
@@ -58,7 +54,6 @@ const Products = () => {
 
   // Pagination
   const productsPerPage = 10;
-
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
@@ -67,7 +62,6 @@ const Products = () => {
     indexOfFirstProduct,
     indexOfLastProduct,
   );
-
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   if (loading)
@@ -78,11 +72,10 @@ const Products = () => {
         ))}
       </div>
     );
-
   // if (error) return <div>{error}</div>;
 
-  // if (!products.length)
-  //   return <p className="text-center mt-10">No products found.</p>;
+  if (!products.length)
+    return <p className="text-center mt-10">No products found.</p>;
 
   return (
     <div className="container mx-auto p-4">
@@ -122,7 +115,7 @@ const Products = () => {
       </div>
 
       {/* Listing Products */}
-      <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
         {currentProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

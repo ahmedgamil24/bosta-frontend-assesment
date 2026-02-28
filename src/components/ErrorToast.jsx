@@ -1,5 +1,3 @@
-import React from 'react'
-
 const ErrorToast = ( {error, setError} ) => {
   return (
     <div className="toast toast-end">
@@ -12,5 +10,4 @@ const ErrorToast = ( {error, setError} ) => {
   </div>
   )
 }
-
 export default ErrorToast
