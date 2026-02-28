@@ -73,10 +73,7 @@ const Products = () => {
       </div>
     );
   // if (error) return <div>{error}</div>;
-
-  if (!products.length)
-    return <p className="text-center mt-10">No products found.</p>;
-
+    if (!products.length && !error) return <p className="text-center mt-10">No Products Found. </p>
   return (
     <div className="container mx-auto p-4">
       {error && ( <ErrorToast error={error} setError={setError}/>)}
