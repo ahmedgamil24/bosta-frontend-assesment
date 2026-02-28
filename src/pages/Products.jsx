@@ -62,7 +62,8 @@ const Products = () => {
     indexOfFirstProduct,
     indexOfLastProduct,
   );
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  // Number (1) Here I Made It Only For Testing When Products Is In Empty State Case // !
+  const totalPages = Math.ceil(products.length / productsPerPage + 1);
 
   if (loading)
     return (
@@ -71,19 +72,46 @@ const Products = () => {
           <SkeletonCard key={idx} />
         ))}
       </div>
-  );
-    
+    );
+
   if (error) {
-  return ( <EmptyState icon="⚠️" title="Failed to Load Products" description={error} actionText="Retry" onAction={() => window.location.reload()} />);}
-  
+    return (
+      <EmptyState
+        icon="⚠️"
+        title="Failed to Load Products"
+        description={error}
+        actionText="Retry"
+        onAction={() => window.location.reload()}
+      />
+    );
+  }
+
   if (!loading && products.length === 0) {
-  return ( <EmptyState icon="📦" title="No Products Available" description="There are no products in the store yet." /> );}
+    return (
+      <EmptyState
+        icon="📦"
+        title="No Products Available"
+        description="There are no products in the store yet."
+      />
+    );
+  }
 
   if (!currentProducts.length) {
-  return (
-    <EmptyState icon="🛍️" title="No Products Found" description="Try adjusting your filters or sorting." actionText="Reset Filters" onAction={() => { setSortOption(""); setCurrentPage(1); }}/>);}
-  
     return (
+      <EmptyState
+        icon="🛍️"
+        title="No Products Found"
+        description="Try adjusting your filters or sorting."
+        actionText="Reset Filters"
+        onAction={() => {
+          setSortOption("");
+          setCurrentPage(1);
+        }}
+      />
+    );
+  }
+
+  return (
     <div className="container mx-auto p-4">
       <div className="navbar bg-base-100 mb-6 rounded-box shadow px-4 flex flex-col sm:flex-row gap-3">
         {/* Left Side */}
@@ -101,9 +129,13 @@ const Products = () => {
             }}
             className="select select-bordered select-sm"
           >
-            <option value="">Default</option>
+            <option value="">
+              <pre>Filter </pre>
+            </option>
             <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
+            <option className="border-b-2 border-gray-400" value="price-desc">
+              Price: High to Low
+            </option>
 
             {categories.map((cat) => (
               <option key={cat} value={`category-${cat}`}>
@@ -126,8 +158,18 @@ const Products = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-8 gap-2 flex-wrap">
-        {Array.from({ length: totalPages + 1 }, (_, index) => (
+      <div className="flex justify-center mt-8 gap-2 flex-wrap items-center">
+        {/* Previous Button */}
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="btn btn-md btn-outline"
+        >
+          &larr; Prev
+        </button>
+
+        {/* Page Numbers */}
+        {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
@@ -138,6 +180,17 @@ const Products = () => {
             {index + 1}
           </button>
         ))}
+
+        {/* Next Button */}
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="btn btn-md btn-outline"
+        >
+          Next &rarr;
+        </button>
       </div>
     </div>
   );
