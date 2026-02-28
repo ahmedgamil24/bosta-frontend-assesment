@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SkeletonForm from "../components/SkeletonForm";
 import BackButton from "../components/BackButton";
+import EmptyState from "../components/EmptyState";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -44,7 +45,7 @@ function CreateProduct() {
         setCategories(response.data);
       } catch (error) {
         console.log(error);
-        setToast({ type: "error", message: "Failed to load categories." });
+        // setToast({ type: "error", message: "Failed to load categories." });
       } finally {
         setLoading(false);
       }
@@ -65,6 +66,18 @@ function CreateProduct() {
   };
 
   if (loading) return (<div><SkeletonForm />{" "}</div>);
+
+  if (!categories.length && !loading) {
+  return (
+    <EmptyState
+      icon="⚠️"
+      title="Failed to Load Categories"
+      description="Cannot get product categories at the moment."
+      actionText="Retry"
+      onAction={() => window.location.reload()}
+    />
+  );
+}
 
   return (
     <>
